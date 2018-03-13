@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled, { keyframes }  from 'styled-components'
 
+const log = console.log.bind(console);
 
 const Wrapper = styled.section`
     width : 100%;
@@ -39,7 +40,7 @@ class MCalendar extends Component {
     handleAnimation = (f, t) => {
         const rotateY = keyframes`
           from {
-            transform: translateY(0);
+            transform: translateY(${f});
           }
         
           to {
@@ -48,29 +49,33 @@ class MCalendar extends Component {
         `;
         return rotateY
     }
-
+    //animation: ${rotateY} 3s linear infinite;
     renderItem = (idx) => {
-        const rotateY = this.handleAnimation();
+        const rotateY = this.handleAnimation(0);
         const Item = styled.div`
                 width : 100%
                 height : 2rem;
                 border-bottom : 1px solid;
-                animation: ${rotateY} 3s linear infinite;
+                
         `
-        return (<Item>{idx}</Item>)
+        return (<Item key = {idx}>{idx}</Item>)
     }
 
     handleTouch = (e) => {
         console.log(e.touches[0].clientY);
+        e.target.style.transform = `translateY(${e.touches[0].clientY}px)`;
     }
 
     render() {
         const { data } = this.state
+        log('data',data)
         const _this = this
         return(
             <Wrapper>
                 <Content onTouchMove = {e => this.handleTouch(e)}>
-                        {_this.renderItem(2)}
+                        {data.map((itm,idx)=>(
+                            _this.renderItem(idx)
+                        ))}
                 </Content>
             </Wrapper>
         )
