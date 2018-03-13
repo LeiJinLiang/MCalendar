@@ -62,8 +62,8 @@ class MCalendar extends Component {
     }
 
     handleTouch = (e) => {
-        console.log(e.touches[0].clientY);
-        e.target.style.transform = `translateY(${e.touches[0].clientY}px)`;
+        log('e',e.target.parentElement)
+        e.target.parentElement.style.transform = `translateY(-${e.touches[0].clientY}px)`;
     }
 
     render() {
